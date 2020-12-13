@@ -7,37 +7,37 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.*;
 
 import com.api.crowdfunding.enumapp.sexUser;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-/**
- * Created by rajeevkumarsingh on 02/08/17.
- */
 
 public class SignUpRequest {
-    @NotBlank
-    @Size(min = 4, max = 40)
+    @NotBlank(message="Le champ nom est obligatoire")
+    @Size(max = 40,message="la taille de votre nom doit inferieur à 40 caractères")
     private String name;
     
-    @NotBlank
-    @Size(min = 4, max = 40)
+    @NotBlank(message="Le champ prenom est obligatoire")
+    @Size(max = 40,message="la taille de votre prenom doit inferieur à 40 caractères")
     private String prenom;
     
     @Enumerated(EnumType.STRING)  
     private sexUser sex;
     
-  
+    @NotNull(message = "Le champ de date de naissance est obligatoire")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @Past(message = "Le format de date n'est pas correcte")
     private Date date_naissance; 
 
-    @NotBlank
-    @Size(min = 3, max = 15)
+    @NotBlank(message="Le champ username est obligatoire")
+    @Size(min = 3, max = 15,message="la taille de mot de passe doit être comprise entre 3 et 15 caractères")
     private String username;
 
-    @NotBlank
-    @Size(max = 40)
-    @Email
+    @NotBlank(message="Le champ email est obligatoire")
+    @Size(max = 40,message="la taille de votre email  doit être inferieure à 40 caractères")
+    @Email(message="Le format de email n'est pas correcte")
     private String email;
 
-    @NotBlank
-    @Size(min = 6, max = 20)
+    @NotBlank(message="Le champ mot de passe est obligatoire")
+    @Size(min = 6, max = 20,message="la taille de mot de passe doit être comprise entre 6 et 20 caractères")
     private String password;
 
     public String getName() {

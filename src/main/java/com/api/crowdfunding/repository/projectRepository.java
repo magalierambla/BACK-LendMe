@@ -48,19 +48,19 @@ public interface  projectRepository extends JpaRepository<project, Long> {
 	 @Query(value = "SELECT * FROM  projects ", nativeQuery = true)
 	 List<project> findAllProjectsByManagerOrAdmin(); 
 	 
-	 @Query(value = "SELECT * FROM  projects  WHERE nom  LIKE   ?1  OR  description  LIKE   ?1 ", nativeQuery = true)
+	 @Query(value = "SELECT * FROM  projects  WHERE  statut_project!=1  AND  statut_project!=3  AND statut_project!=4 AND  nom  LIKE   ?1  OR  description  LIKE   ?1 ", nativeQuery = true)
 	 List<project> findAllProjectsByLikeTag(@Param("tag") String tag); 
 	 
 	 List<project> findByNomLike(String tag);
 	 
-	 @Query(value = "SELECT * FROM  projects   ORDER BY total_vues DESC  LIMIT 4", nativeQuery = true)
+	 @Query(value = "SELECT * FROM  projects  WHERE statut_project!=1  AND  statut_project!=3  AND statut_project!=4   ORDER BY total_vues DESC  LIMIT 4", nativeQuery = true)
 	 List<project> findAllProjectsTopConsultation(); 
 	 
-	 @Query(value = "SELECT * FROM  projects   ORDER BY total_dislike DESC  LIMIT 4", nativeQuery = true)
+	 @Query(value = "SELECT * FROM  projects   WHERE statut_project!=1  AND  statut_project!=3  AND statut_project!=4  ORDER BY total_dislike DESC  LIMIT 4", nativeQuery = true)
 	 List<project> findAllProjectsTopLikes();
 	 
 	 
-	 @Query(value = "SELECT * FROM  projects   ORDER BY total_hearts DESC  LIMIT 4", nativeQuery = true)
+	 @Query(value = "SELECT * FROM  projects   WHERE statut_project!=1  AND  statut_project!=3  AND statut_project!=4  ORDER BY total_hearts DESC  LIMIT 4", nativeQuery = true)
 	 List<project> findAllProjectsTopHearts();
 	 
 	 @Query(value = "SELECT * FROM  projects   WHERE statut_project!=1  AND  statut_project!=3  AND statut_project!=4  ORDER BY RAND()  LIMIT 1", nativeQuery = true)

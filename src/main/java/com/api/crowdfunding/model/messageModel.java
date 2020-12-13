@@ -28,21 +28,21 @@ public class  messageModel implements Serializable{
     private String token;
 
     @Column(columnDefinition="TEXT",nullable = false)   
-    private String bodyMessage;
+    private String body_message;
     
     @Column(nullable = false)
-    private String dateCreated;
+    private String date_created;
     
     @Column(nullable = false)
     private Long timestamp;     
     
     
     @Column(nullable = false)
-    private String _userExp;      
+    private String _user_exp;      
     
  
     @Column(nullable = false)  
-    private String _userDest;  
+    private String _user_dest;  
     
 	
     @Column(nullable = true)
@@ -68,19 +68,19 @@ public class  messageModel implements Serializable{
 	}
 
 	public String getBodyMessage() {
-		return bodyMessage;
+		return body_message;
 	}
 
 	public void setBodyMessage(String bodyMessage) {
-		this.bodyMessage = bodyMessage;
+		this.body_message = bodyMessage;
 	}
 
 	public String getDateCreated() {
-		return dateCreated;
+		return date_created;
 	}
 
 	public void setDateCreated(String dateCreated) {
-		this.dateCreated = dateCreated;
+		this.date_created = dateCreated;
 	}
 
 	public Long getTimestamp() {
@@ -92,19 +92,19 @@ public class  messageModel implements Serializable{
 	}
 
 	public String get_userExp() {
-		return _userExp;
+		return _user_exp;
 	}
 
 	public void set_userExp(String _userExp) {
-		this._userExp = _userExp;
+		this._user_exp = _userExp;
 	}
 
 	public String get_userDest() {
-		return _userDest;
+		return _user_dest;
 	}
 
 	public void set_userDest(String _userDest) {
-		this._userDest = _userDest;
+		this._user_dest = _userDest;
 	}
 
 	public Long getTimestampConsultation() {

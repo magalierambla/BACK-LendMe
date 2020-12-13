@@ -2,27 +2,48 @@ package com.api.crowdfunding.payload;
 
 import java.util.Date;
 
+import javax.persistence.Temporal;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
 import com.api.crowdfunding.model.category_project;
 import com.api.crowdfunding.model.porte_project;
-import com.api.crowdfunding.model.statutProject;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 public class ProjetRequest {
 	
-    private String nom;    
+	@NotBlank(message="Le champ nom est obligatoire")
+	private String nom;    
     
-    private String description;   
+	@NotBlank(message="Le champ description est obligatoire")
+	@Size(min = 6,message="la taille de description doit être superieur à 6 caractères")
+	private String description;   
   
-    private Long montant_minimun;   
-   	    
+
+	@Min(value = 1, message = "Le montant minimun est de 1 euros")
+	private Long montant_minimun;  	    
+ 
+ 
+
     private Date date_limite_collecte;    
     
+    @NotBlank(message="Le champ contre partie de projet est obligatoire")
     private String contrePartieProject;	  
 
+    @NotBlank(message="Le champ affiche de projet est obligatoire")
     private String afficheProject;    
   
-    private category_project categoryProject;  
-
-    private porte_project  _porte_project ;
+   
+    @NotBlank(message="Le champ categorie de projet est obligatoire")
+    private String token_category;      
+    
+   
+    private Long  id_porte_project ;
 
     
 
@@ -74,21 +95,23 @@ public class ProjetRequest {
 		this.afficheProject = afficheProject;
 	}
 
-	public category_project getCategoryProject() {
-		return categoryProject;
+	public String getToken_category() {
+		return token_category;
 	}
 
-	public void setCategoryProject(category_project categoryProject) {
-		this.categoryProject = categoryProject;
+	public void setToken_category(String token_category) {
+		this.token_category = token_category;
 	}
 
-	public porte_project get_porte_project() {
-		return _porte_project;
+	public Long getId_porte_project() {
+		return id_porte_project;
 	}
 
-	public void set_porte_project(porte_project _porte_project) {
-		this._porte_project = _porte_project;
+	public void setId_porte_project(Long id_porte_project) {
+		this.id_porte_project = id_porte_project;
 	}
+
+
 
 
 }

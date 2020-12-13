@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.api.crowdfunding.model.porte_project;
+import com.api.crowdfunding.model.project;
 
 
 
@@ -71,7 +72,56 @@ public class ProjectResponseForVisitor {
     	this._news_project = new ArrayList<NewsProjectResponse>();
     	
     	this._adress_sociaux_project = new ArrayList<AdressReseauxSociauxProjectResponse>();
+    } 
+    
+    public ProjectResponseForVisitor(project   _project_Bdd,UserResponse _user){ 	
+    	
+
+         this.setNom(_project_Bdd.getNom()); 
+
+         this.setToken(_project_Bdd.getToken());
+
+         this.setAfficheProject(_project_Bdd.getAfficheProject());
+         
+         this.setAfficheProject(_project_Bdd.getAfficheProject());
+         
+         this.setMontant_minimun(_project_Bdd.getMontant_minimun());
+         
+         this.setTotal_comments(_project_Bdd.getTotal_comments());
+         
+         this.setTotal_dislike(_project_Bdd.getTotal_dislike());
+         
+         this.setTotal_favoris(_project_Bdd.getTotal_favoris());
+         
+         this.setTotal_fonds(_project_Bdd.getTotal_fonds());
+         
+         this.setTotal_hearts(_project_Bdd.getTotal_hearts());
+         
+         this.setTotal_investisseurs(_project_Bdd.getTotal_investisseurs());
+         
+         this.setTotal_like(_project_Bdd.getTotal_like());
+         
+         this.setTotal_vues(_project_Bdd.getTotal_vues());
+         
+         this.setCreated_at(_project_Bdd.getCreated_at());
+         
+         CategoryResponse _categoryResponse = new CategoryResponse(_project_Bdd.getCategoryProject());
+         
+         this.setCategoryProject(_categoryResponse);
+         
+         this.set_porte_project(_project_Bdd.get_porte_project());
+         
+         this.setDate_limite_collecte(_project_Bdd.getDate_limite_collecte());
+         
+         this.setDescription(_project_Bdd.getDescription());
+         
+         StatutResponse  _statutResponse = new StatutResponse(_project_Bdd.get_statut_project());
+         
+         this.set_statut_project(_statutResponse);
+
+         this.set_user(_user );
     }  
+    
     
     
     

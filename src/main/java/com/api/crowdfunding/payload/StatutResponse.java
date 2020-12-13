@@ -1,6 +1,8 @@
 package com.api.crowdfunding.payload;
 
-import javax.persistence.Column;
+
+
+import com.api.crowdfunding.model.statutProject;
 
 public class StatutResponse {
 	
@@ -8,6 +10,14 @@ public class StatutResponse {
     private String token;
   
     private String nom;
+    
+    public StatutResponse(statutProject  _statut_projectBdd){
+    	
+         this.setToken(_statut_projectBdd.getToken());
+		
+		 this.setNom(_statut_projectBdd.getNom());
+    	
+    }
 
 	public String getToken() {
 		return token;

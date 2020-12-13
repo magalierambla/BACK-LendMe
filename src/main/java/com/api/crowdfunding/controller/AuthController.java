@@ -5,6 +5,7 @@ import com.api.crowdfunding.functionsUtils.methodesUtils;
 import com.api.crowdfunding.model.Role;
 import com.api.crowdfunding.model.RoleName;
 import com.api.crowdfunding.model.User;
+import com.api.crowdfunding.model.project;
 import com.api.crowdfunding.payload.ApiResponse;
 import com.api.crowdfunding.payload.JwtAuthenticationResponse;
 import com.api.crowdfunding.payload.LoginRequest;
@@ -23,6 +24,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +41,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.security.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 
 
@@ -79,14 +89,131 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest, Errors errors) throws ParseException {
+    	
+    	 List<ApiResponse> listErrors = new ArrayList<ApiResponse>(); 
+         
+    	
+		/******************************************************/
+    	if (errors.hasErrors()) {
+    		
+			System.out.println("Errors count : " + errors.getErrorCount());
+			
+			for (ObjectError objectError : errors.getAllErrors()) {
+				
+				System.out.println("objectError.getDefaultMessage() : " + objectError.getDefaultMessage());
+				
+				System.out.println("objectError.getObjectName() : " + objectError.getObjectName());
+			}
+			
+			if(errors.hasFieldErrors("password")) {
+				
+				ObjectError objectError = errors.getFieldError("password");
+				
+				listErrors.add(new ApiResponse(false, objectError.getDefaultMessage(),"password"));			
+				
+			}
+			
+			if(errors.hasFieldErrors("name")) {		
+				 
+				 ObjectError objectError = errors.getFieldError("name");
+					
+				 listErrors.add(new ApiResponse(false, objectError.getDefaultMessage(),"name"));				
+			}
+			
+			if(errors.hasFieldErrors("prenom")) {		 
+				 
+				 ObjectError objectError = errors.getFieldError("prenom");
+					
+				 listErrors.add(new ApiResponse(false, objectError.getDefaultMessage(),"prenom"));				
+				
+			}
+			
+			if(errors.hasFieldErrors("email")) {
+				
+				ObjectError objectError = errors.getFieldError("email");
+				
+				listErrors.add(new ApiResponse(false, objectError.getDefaultMessage(),"email"));	
+				
+			}
+			
+			if(errors.hasFieldErrors("username")) {
+				
+                ObjectError objectError = errors.getFieldError("username");
+				
+				listErrors.add(new ApiResponse(false, objectError.getDefaultMessage(),"username"));				
+				
+				
+			}			
+			
+			
+			if(errors.hasFieldErrors("date_naissance")) {	
+				
+				 ObjectError objectError = errors.getFieldError("date_naissance");
+					
+				 listErrors.add(new ApiResponse(false, objectError.getDefaultMessage(),"date_naissance"));			
+				
+			}
+
+
+			
+		}
+
+    	
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),HttpStatus.BAD_REQUEST);
+        	
+        	listErrors.add(new ApiResponse(false, "Ce nom utilisateur est déja pris.Veuillez choisir une autre","username"));	
+        	
+           
         }
 
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),HttpStatus.BAD_REQUEST);
+        	
+        	listErrors.add(new ApiResponse(false, "Cette adresse mail est déja prise.Veuillez choisir une autre!","email"));	
+        	
+         
         }
+        
+     /************************ Check control date naissance ******************************/
+    	
+    	// https://www.javatpoint.com/java-date-to-timestamp
+    	
+    /*	String inputDateInString= "8/15/2017 12:00:00 AM";
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyy hh:mm:ss");
+
+		Date parsedDate = dateFormat.parse(inputDateInString);
+
+		java.sql.Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+
+		System.out.println("Timestamp "+ timestamp.getTime()); */
+    	
+    	
+        Date dateNaisssanceReq =  signUpRequest.getDate_naissance();
+        
+		java.sql.Timestamp timestamp = new java.sql.Timestamp(dateNaisssanceReq.getTime());
+		
+		Instant instantBis = Instant.now();
+
+		long _timestamp_acuel = instantBis.toEpochMilli();
+		
+		if(timestamp.getTime() >= _timestamp_acuel) {
+			
+			listErrors.add(new ApiResponse(false, "La date de naissance est superieur a la date actuelle.","date_naissance"));	
+			
+			
+		}
+		
+        if(listErrors.size()>0) {
+	    	 
+	    	 
+	    	 return new ResponseEntity(listErrors,HttpStatus.BAD_REQUEST); //  code 400
+	    	 
+	     }
+		
+		/***************************************************/
+        
+        
 
         // Creating user's account
         

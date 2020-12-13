@@ -15,6 +15,7 @@ import com.api.crowdfunding.model.porte_project;
 @Table(name = "list_porte_project")
 public interface  porteProjectRepository extends JpaRepository<porte_project, Long> {
 	
+	Optional<porte_project> findById(Long id);	
 
 	Optional<porte_project> findByNom(String nomPorte); 	
 	

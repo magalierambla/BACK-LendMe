@@ -6,10 +6,20 @@ package com.api.crowdfunding.payload;
 public class ApiResponse {
     private Boolean success;
     private String message;
+    private String champ;
 
     public ApiResponse(Boolean success, String message) {
         this.success = success;
         this.message = message;
+        this.champ = "";
+        
+    }
+    
+    public ApiResponse(Boolean success,String message,String _champ) {
+        this.success = success;
+        this.message = message;
+        this.champ = _champ;
+        
     }
 
     public Boolean getSuccess() {
@@ -27,4 +37,12 @@ public class ApiResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
+	public String getChamp() {
+		return champ;
+	}
+
+	public void setChamp(String champ) {
+		this.champ = champ;
+	}
 }

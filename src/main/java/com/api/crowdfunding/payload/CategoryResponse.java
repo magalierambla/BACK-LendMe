@@ -4,16 +4,28 @@ import javax.persistence.Column;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.api.crowdfunding.model.category_project;
+
 public class CategoryResponse {
 	
     
-    private String token;  
-
+    private String token; 
     
-    private String nom;  
-    
+    private String nom;      
  
     private int nbr_projects;
+    
+    public CategoryResponse() {}
+    
+    public CategoryResponse(category_project  _category_projectBdd) {
+    	
+        this.setToken(_category_projectBdd.getToken());
+		
+		this.setNom(_category_projectBdd.getNom());
+		
+		this.setNbr_projects(_category_projectBdd.getNbr_projects());
+    	
+    }
 
 
 	public String getToken() {

@@ -2,6 +2,8 @@ package com.api.crowdfunding.payload;
 
 import javax.persistence.Column;
 
+import com.api.crowdfunding.model.adressReseauxSociauxProject;
+
 public class AdressReseauxSociauxProjectResponse {
 	
 	 
@@ -15,6 +17,21 @@ public class AdressReseauxSociauxProjectResponse {
 	    
 	   
 	    private String linkProject;
+	    
+	    public AdressReseauxSociauxProjectResponse() {}
+	    
+	    public AdressReseauxSociauxProjectResponse(adressReseauxSociauxProject  _adressReseauxSociauxBdd) {
+	    	
+	    	this.setKeyMedia(_adressReseauxSociauxBdd.getKeyMedia());
+			
+	    	this.setLinkProject(_adressReseauxSociauxBdd.getLinkProject());
+			
+	    	this.setToken(_adressReseauxSociauxBdd.getToken());
+			
+	    	this.setValueMedia(_adressReseauxSociauxBdd.getValueMedia());
+	    	
+	    	
+	    }
 
 
 		public String getToken() {

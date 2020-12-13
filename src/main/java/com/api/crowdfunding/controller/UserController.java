@@ -11,6 +11,7 @@ import com.api.crowdfunding.security.UserPrincipal;
 import com.api.crowdfunding.services.UserService;
 import com.api.crowdfunding.util.AppConstants;
 
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -80,7 +81,7 @@ public class UserController {
 	
 	
 	
-    @PostMapping(value = "users/{token_user}")
+	@PostMapping(value = "users/{token_user}")
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
 	@ResponseBody
 	public ResponseEntity<User> getInfosUser(@CurrentUser UserPrincipal currentUser,@PathVariable String token_user) {
@@ -90,24 +91,35 @@ public class UserController {
 
 		 try {		 
 
-		       if(null==token_user || token_user.equals(0L)) {
+		       if(null==token_user || token_user.isEmpty()) {
 
 		            	
 		            	 
 		            	 response = new ResponseEntity( new ApiResponse(false, "token user not read!"), HttpStatus.BAD_REQUEST);	
 
 		        }else {
-		            	 
-		             User _user = _userService.getInfosUser(currentUser,token_user);			             
+		        	
+		        	
+		        	 try {	
+		        		 
+		        		 User _user = _userService.getInfosUser(currentUser,token_user);			             
 			             
-			         if (_user != null) {
+				         if (_user != null) {
 
-			            	 response = new ResponseEntity<User>(_user,HttpStatus.OK);
+				            	 response = new ResponseEntity<User>(_user,HttpStatus.OK);
 
-			     	} else {
+				     	} else {
 
-			     		response = new ResponseEntity(new ApiResponse(false, "user not found !"), HttpStatus.INTERNAL_SERVER_ERROR);	
-			     	}        
+				     		response = new ResponseEntity(new ApiResponse(false, "user not found !"), HttpStatus.BAD_REQUEST);	
+				     	}    
+		        		 
+		        	 }catch(Exception e) {		
+
+		   			  logger.error("System Error:",e.getMessage());		 
+
+		   		      response = new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);	
+		   		      
+		   		      }            
 		            	 
 		        }
 		       
@@ -229,7 +241,7 @@ public class UserController {
 	}
 	
 	
-	/*@PostMapping(value = "messagerie_interne/list_message/messages_envoyes")
+	@PostMapping(value = "messagerie_interne/list_message/messages_envoyes")
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER','USER')")
 	@ResponseBody
 	public ResponseEntity<List<MessageInterneResponse>> listMessageInterneEnvoyes(@CurrentUser UserPrincipal currentUser) {
@@ -247,7 +259,7 @@ public class UserController {
 
 	}
 	
-	/*@PostMapping(value = "messagerie_interne/list_message/messages_recus")
+	@PostMapping(value = "messagerie_interne/list_message/messages_recus")
 	@PreAuthorize("hasAnyRole('ADMIN','MANAGER','USER')")
 	@ResponseBody
 	public ResponseEntity<List<MessageInterneResponse>> listMessageInterneRecus(@CurrentUser UserPrincipal currentUser) {
@@ -263,7 +275,55 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-	}*/
+	}
+	
+	@PostMapping(value = "messagerie_interne/list_message/{token_message}")
+	@PreAuthorize("hasAnyRole('ADMIN','MANAGER','USER')")
+	@ResponseBody
+	public ResponseEntity<MessageInterneResponse> getDataMessageInterne(@CurrentUser UserPrincipal currentUser, @PathVariable String token_message) {
+
+		MessageInterneResponse  _message = _userService.getDataMessageInterne(currentUser, token_message);
+
+		if (_message != null) {
+
+			return ResponseEntity.ok(_message);
+
+		} else {
+
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+	}
+	
+	
+	@PostMapping(value = "messagerie_interne/list_message/count_messages_recus_non_lus")
+	@PreAuthorize("hasAnyRole('ADMIN','MANAGER','USER')")
+	@ResponseBody
+	public ResponseEntity<?> countMessageInterneRecusNonLus(@CurrentUser UserPrincipal currentUser) {
+
+		int  _nbrmessages = _userService.countMessageInterneRecusNonLus(currentUser);
+
+		return ResponseEntity.ok(_nbrmessages);
+
+	}
+	
+	@PostMapping(value = "messagerie_interne/list_message/messages_recus_non_lus")
+	@PreAuthorize("hasAnyRole('ADMIN','MANAGER','USER')")
+	@ResponseBody
+	public ResponseEntity<List<MessageInterneResponse>> listMessageInterneRecusNonLus(@CurrentUser UserPrincipal currentUser) {
+
+		List<MessageInterneResponse>  _messages = _userService.listMessageInterneRecusNonLus(currentUser);
+
+		if (_messages != null) {
+
+			return ResponseEntity.ok(_messages);
+
+		} else {
+
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+	}
 
 
 }

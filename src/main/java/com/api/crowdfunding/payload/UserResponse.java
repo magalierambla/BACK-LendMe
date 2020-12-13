@@ -4,6 +4,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import com.api.crowdfunding.enumapp.sexUser;
+import com.api.crowdfunding.model.User;
 
 public class UserResponse {	
  
@@ -24,22 +25,24 @@ public class UserResponse {
     
     public UserResponse(){}
     
-    public UserResponse(String _name, String _prenom,String _photo_user,String _token,int _nbr_projects,String _username,sexUser _sex){
+    public UserResponse(User user){
     	
-    	this.name = _name;
+    	this.name = user.getName();
     	
-    	this.prenom = _prenom;
+    	this.prenom = user.getPrenom();
     	
-    	this.photo_user = _photo_user;
+    	this.photo_user = user.getPhotoUser();
     	
-    	this.token = _token;
+    	this.token = user.getToken();
     	
-    	this.nbr_projects = _nbr_projects;    	
+    	this.nbr_projects = user.getNbr_projects();    	
     	
-    	this.username = _username;
+    	this.username = user.getUsername();
     	
-    	this.sex = _sex;
+    	this.sex = user.getSex();
     }
+
+	
 
 	public String getName() {
 		return name;
